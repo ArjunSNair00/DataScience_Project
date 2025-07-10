@@ -42,3 +42,22 @@ print(df)
 # Test 4: Sort by Age descending
 print("\nTest 4 - Sorted by Age descending:")
 print(df.sort_values(by='Age', ascending=False))
+
+'''matplotlib test'''
+import matplotlib.pyplot as plt
+
+# Sample data
+x = [1, 2, 3, 4, 5]
+y = [10, 12, 8, 14, 7]
+
+# Create the plot
+plt.plot(x, y, marker='o', linestyle='-', color='blue', label='Sample Line')
+
+# Add labels and title
+plt.xlabel('X Axis')
+plt.ylabel('Y Axis')
+plt.title('Simple Matplotlib Plot')
+plt.legend()
+
+# Show the plot
+plt.show()
