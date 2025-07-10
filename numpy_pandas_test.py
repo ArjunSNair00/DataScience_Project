@@ -18,7 +18,7 @@ print("\nPandas Test")
 # Create a simple DataFrame
 data = {
     'Name': ['Arjun', 'Akshay', 'Raihan', 'Abhishek'],
-    'Age': [25, 30, 35, 40],
+    'Age': [19, 19, 19, 19],
     'Salary': [50000, 60000, 70000, 80000]
 }
 df = pd.DataFrame(data)
