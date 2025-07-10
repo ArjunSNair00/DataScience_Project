@@ -1,4 +1,3 @@
-a=5
-print(a)
-b=32
-print(a+b)
+import numpy as np
+arr = np.array([1, 2, 3, 4, 5])
+print(arr)
