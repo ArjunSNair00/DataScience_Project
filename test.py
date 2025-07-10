@@ -2,7 +2,7 @@
 test project for data science involving numpy, pandas, matplotlib
 
 '''
-#numpy test
+'''numpy test'''
 import numpy as np
 arr = np.array([1, 2, 3, 4, 5])
 sum=0
@@ -11,7 +11,8 @@ for i in arr:
 	sum+=i
 print("Sum:",sum)
 
-#import pandas as pd
+'''pandas test'''
+import pandas as pd
 
 # Create a simple DataFrame
 data = {
