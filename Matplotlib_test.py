@@ -1,5 +1,5 @@
 '''
-test project for data science involving numpy, pandas, matplotlib
+test project for data science using matplotlib
 
 '''
 '''numpy test'''
