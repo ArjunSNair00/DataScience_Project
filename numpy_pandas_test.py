@@ -28,8 +28,8 @@ print("Original DataFrame:")
 print(df)
 
 # Test 1: Select rows where Age > 16
-print("\nTest 1 - Age > 16:")
-print(df[df['Age'] > 16])
+print("\nTest 1 - Salary > 65000:")
+print(df[df['Salary'] > 65000])
 
 # Test 2: Calculate the average salary
 average_salary = df['Salary'].mean()
