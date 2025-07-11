@@ -27,9 +27,9 @@ df = pd.DataFrame(data)
 print("Original DataFrame:")
 print(df)
 
-# Test 1: Select rows where Age > 30
-print("\nTest 1 - Age > 30:")
-print(df[df['Age'] > 30])
+# Test 1: Select rows where Age > 16
+print("\nTest 1 - Age > 16:")
+print(df[df['Age'] > 16])
 
 # Test 2: Calculate the average salary
 average_salary = df['Salary'].mean()
