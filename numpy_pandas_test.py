@@ -1,3 +1,4 @@
+
 '''
 test project for data science involving numpy, pandas
 
@@ -42,4 +43,4 @@ print(df)
 
 # Test 4: Sort by Age descending
 print("\nTest 4 - Sorted by Age descending:")
-print(df.sort_values(by='Age', ascending=False))
+print(df.sort_values(by='Age', ascending=True))
