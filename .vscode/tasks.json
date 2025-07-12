@@ -4,7 +4,11 @@
     {
       "label": "Auto Commit Last Sync",
       "type": "shell",
-      "command": "git add . && git commit -m \"Last Sync: $(powershell -Command \\\"Get-Date -Format 'yyyy-MM-dd HH:mm'\\\") (PC)\"",
+      "command": "powershell",
+      "args": [
+        "-Command",
+        "git add .; git commit -m ('Last Sync: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm') + ' (PC)')"
+      ],
       "problemMatcher": [],
       "group": {
         "kind": "build",
