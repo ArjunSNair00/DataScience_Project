@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Auto Commit Last Sync",
+      "label": "Auto Commit and Sync",
       "type": "shell",
       "command": "powershell",
       "args": [
         "-Command",
-        "git add .; git commit -m ('Last Sync: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm') + ' (PC)')"
+        "git add .; git commit -m ('Last Sync: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm') + ' (PC)'); git push"
       ],
       "problemMatcher": [],
       "group": {
