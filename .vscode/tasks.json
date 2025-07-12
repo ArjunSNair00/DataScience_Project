@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Auto Commit Last Sync",
+      "type": "shell",
+      "command": "git add . && git commit -m \"Last Sync: $(powershell -Command \\\"Get-Date -Format 'yyyy-MM-dd HH:mm'\\\") (PC)\"",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
