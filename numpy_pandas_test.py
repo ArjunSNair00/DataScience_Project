@@ -16,7 +16,7 @@ print("Sum:",sum)
 '''pandas test'''
 import pandas as pd
 print("\nPandas Test")
-# Create a simple DataFrame
+# Create a simple DataFrame (dictionary datatype)
 data = {
     'Name': ['Arjun', 'Akshay', 'Raihan', 'Abhishek'],
     'Age': [19, 19, 19, 19],
@@ -28,7 +28,7 @@ df = pd.DataFrame(data)
 print("Original DataFrame:")
 print(df)
 
-# Test 1: Select rows where Age > 16
+# Test 1: Select rows where Salary >65000
 print("\nTest 1 - Salary > 65000:")
 print(df[df['Salary'] > 65000])
 
@@ -41,6 +41,6 @@ df['Salary_k'] = df['Salary'] / 1000
 print("\nTest 3 - DataFrame with Salary_k column:")
 print(df)
 
-# Test 4: Sort by Age descending
+# Test 4: Sort by Salary in descending order
 print("\nTest 4 - Sorted by Age descending:")
-print(df.sort_values(by='Age', ascending=False))
+print(df.sort_values(by='Salary', ascending=False))
