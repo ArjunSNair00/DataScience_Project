@@ -1,2 +1,2 @@
 name="akshay"
-print(name)
+print("hello world")
