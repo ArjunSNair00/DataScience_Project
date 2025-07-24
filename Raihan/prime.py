@@ -1,6 +1,9 @@
+#for some reason python cant find the file directory in pc so i have to use os
 import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(script_dir, "Number.txt")
+
+
 file = open(file_path, "r")
 print("Prime numbers: ")
 for number in file:
