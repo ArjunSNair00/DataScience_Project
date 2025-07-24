@@ -1,0 +1,1 @@
+print(df[df['Salary'] > 65000])
