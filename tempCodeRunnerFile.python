@@ -1,6 +1,20 @@
+import matplotlib.pyplot as plt
+import numpy as np
 from mpl_toolkits import mplot3d
 
-#single points plotting
 ax=plt.axes(projection="3d")
-ax.scatter(3,5,7)
+
+steps=0.1
+
+x=np.arange(-5,5,steps)
+y=np.arange(-5,5,steps)
+
+X,Y=np.meshgrid(x,y)
+Z=np.sin(X)*np.cos(Y)
+
+ax.plot_surface(X,Y,Z,cmap="plasma")
+# azimuth = 0, elevation of 90
+ax.view_init(azim=0,elev=90)
+ax.view_init(azim=0,elev=0)
 plt.show()
+
