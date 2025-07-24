@@ -4,17 +4,11 @@ from mpl_toolkits import mplot3d
 
 ax=plt.axes(projection="3d")
 
-steps=0.1
+omega=2
+z=np.linspace(0,10,int(omega/2)*100)
+x=np.cos(omega*z)
+y=np.sin(omega*z)
 
-x=np.arange(-5,5,steps)
-y=np.arange(-5,5,steps)
-
-X,Y=np.meshgrid(x,y)
-Z=np.sin(X)*np.cos(Y)
-
-ax.plot_surface(X,Y,Z,cmap="plasma")
-# azimuth = 0, elevation of 90
-ax.view_init(azim=0,elev=90)
-ax.view_init(azim=0,elev=0)
+ax.view_init(30,30)
+ax.plot3D(x,y,z)
 plt.show()
-
