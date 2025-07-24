@@ -1,14 +1,33 @@
-import matplotlib.pyplot as plt
+# %%
 import numpy as np
-from mpl_toolkits import mplot3d
+import pandas as pd
+#creating array from list
+arr=[0,1,2,3,4]
+s1=pd.Series(arr)
+s1
 
-ax=plt.axes(projection="3d")
+# %%
+#using randomness for values
+n=np.random.randn(5) #random Ndarray
+index=['a','b','c','d','e']
+s2=pd.Series(n,index=index)
+s2
 
-omega=2
-z=np.linspace(0,10,int(omega/2)*100)
-x=np.cos(omega*z)
-y=np.sin(omega*z)
+# %%
+#using dictionary
+d={'a':1,'b':2,'c':3,'d':4,'e':5}
+s3=pd.Series(d)
+s3
 
-ax.view_init(30,30)
-ax.plot3D(x,y,z)
-plt.show()
+# %%
+#modifying the index of series
+print(s1)
+s1.index=['A','B','C','D','E']
+s1
+
+# %%
+#slicing
+a=s1[2:5]
+print(a)
+
+
