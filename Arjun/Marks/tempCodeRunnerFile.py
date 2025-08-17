@@ -1,1 +1,1 @@
-print(a=np.append(a,4))
+* np.pi * f 

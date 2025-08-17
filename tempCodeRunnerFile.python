@@ -1,33 +1,20 @@
-# %%
+import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-#creating array from list
-arr=[0,1,2,3,4]
-s1=pd.Series(arr)
-s1
+from mpl_toolkits import mplot3d
 
-# %%
-#using randomness for values
-n=np.random.randn(5) #random Ndarray
-index=['a','b','c','d','e']
-s2=pd.Series(n,index=index)
-s2
+#single points plotting
+ax=plt.axes(projection="3d")
 
-# %%
-#using dictionary
-d={'a':1,'b':2,'c':3,'d':4,'e':5}
-s3=pd.Series(d)
-s3
+points=40
 
-# %%
-#modifying the index of series
-print(s1)
-s1.index=['A','B','C','D','E']
-s1
+x=np.arange(0,4,0.1)
+y=np.arange(0,4,0.1)
+z=np.arange(0,4,0.1)
 
-# %%
-#slicing
-a=s1[2:5]
-print(a)
+palette = [
+  "#00FFAA", "#EEFF00", "#4C00FF"
+]
+colors = [palette[np.random.randint(0, len(palette))] for _ in range(points)]
 
-
+ax.scatter(x, y, z, c=colors,marker='.',alpha=1)
+plt.show()
