@@ -2,17 +2,22 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
+import os
 
 # Feature Engineering Function
 def prepare_features(df):
-    df['bathrooms_ratio'] = df['bathrooms'] / df['area']
+    df = df.copy()
+    
+    # Avoid division by zero
+    df['bathrooms_ratio'] = df['bathrooms'] / df['area'].replace(0, 1)
     df['total_rooms_est'] = df['bathrooms'] + df['balconies'] + 1  # +1 for living room
     df['households_est'] = 1
     df['household_rooms'] = df['total_rooms_est'] / df['households_est']
     
-    # Apply log transformation to numerical features
-    for col in ['age', 'amneties', 'area', 'atmDistance', 'balconies', 'bathrooms',
-                'hospitalDistance', 'restrauntDistance', 'schoolDistance', 'shoppingDistance', 'status']:
+    # Apply log transformation to numerical features (exclude 'status')
+    num_cols = ['age', 'amneties', 'area', 'atmDistance', 'balconies', 'bathrooms',
+                'hospitalDistance', 'restrauntDistance', 'schoolDistance', 'shoppingDistance']
+    for col in num_cols:
         df[col] = np.log(df[col] + 1)
     
     return df
@@ -20,14 +25,14 @@ def prepare_features(df):
 # Load and train model
 @st.cache_resource
 def get_model():
-    data = pd.read_csv('data.csv')
+    file_path = os.path.join(os.path.dirname(__file__), 'data.csv')
+    data = pd.read_csv(file_path)
     data = prepare_features(data)
     X = data.drop('price', axis=1)
     y = data['price']
     
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X, y)
-    
     return model
 
 model = get_model()
@@ -37,7 +42,7 @@ st.title("Kerala House Price Predictor")
 
 # User inputs
 age = st.number_input("Age of Property (years)", min_value=0)
-amneties = st.number_input("Amneties Score", min_value=0)
+amneties = st.number_input("Amenities Score", min_value=0)
 area = st.number_input("Area (sqft)", min_value=100)
 atmDistance = st.number_input("ATM Distance (km)", min_value=0.0)
 balconies = st.number_input("Number of Balconies", min_value=0)
@@ -46,7 +51,11 @@ hospitalDistance = st.number_input("Hospital Distance (km)", min_value=0.0)
 restrauntDistance = st.number_input("Restaurant Distance (km)", min_value=0.0)
 schoolDistance = st.number_input("School Distance (km)", min_value=0.0)
 shoppingDistance = st.number_input("Shopping Complex Distance (km)", min_value=0.0)
-status = st.selectbox("Status", options=[1, 2, 3], format_func=lambda x: {1:'Unfurnished', 2:'Under Construction', 3:'Ready to Move'}[x])
+status = st.selectbox(
+    "Status", 
+    options=[1, 2, 3], 
+    format_func=lambda x: {1:'Unfurnished', 2:'Under Construction', 3:'Ready to Move'}[x]
+)
 
 # Prepare input DataFrame
 input_df = pd.DataFrame({
