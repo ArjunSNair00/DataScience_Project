@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os
 from sklearn.ensemble import RandomForestRegressor
 
 # Feature Engineering Function
@@ -20,7 +21,11 @@ def prepare_features(df):
 # Load and train model
 @st.cache_resource
 def get_model():
-    data = pd.read_csv('data.csv')
+    # Get absolute path to data.csv
+    BASE_DIR = os.path.dirname(__file__)
+    data_path = os.path.join(BASE_DIR, 'data.csv')
+    
+    data = pd.read_csv(data_path)
     data = prepare_features(data)
     X = data.drop('price', axis=1)
     y = data['price']
@@ -46,7 +51,11 @@ hospitalDistance = st.number_input("Hospital Distance (km)", min_value=0.0)
 restrauntDistance = st.number_input("Restaurant Distance (km)", min_value=0.0)
 schoolDistance = st.number_input("School Distance (km)", min_value=0.0)
 shoppingDistance = st.number_input("Shopping Complex Distance (km)", min_value=0.0)
-status = st.selectbox("Status", options=[1, 2, 3], format_func=lambda x: {1:'Unfurnished', 2:'Under Construction', 3:'Ready to Move'}[x])
+status = st.selectbox(
+    "Status",
+    options=[1, 2, 3],
+    format_func=lambda x: {1:'Unfurnished', 2:'Under Construction', 3:'Ready to Move'}[x]
+)
 
 # Prepare input DataFrame
 input_df = pd.DataFrame({
