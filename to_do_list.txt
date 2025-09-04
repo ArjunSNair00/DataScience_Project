@@ -1,0 +1,9 @@
+now what i want you to do is use matplotlib (not seaborn) to display the following graphs, (dont use any libraries other than numpy, pandas, matplotlib) 
+1)Top 100 Most-in-demand skills 
+2)Distribution of number of skills per job 
+3)heatmap of top 10 skills co-occurence 
+4)proportions of job needing each skill category pie chart 
+5)top 10 companies hiring (company y axis, number of job listings x axis) 
+6)distribution of company ratings 
+7)correlation heatmaps 
+8) you got any other idea? :
