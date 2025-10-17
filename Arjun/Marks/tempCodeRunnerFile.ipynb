@@ -1,7 +1,0 @@
-import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
-
-#single points plotting
-ax=plt.axes(projection="3d")
-ax.scatter(3,5,7)
-plt.show()
