@@ -309,3 +309,22 @@ if st.button("🔍 Get Job Recommendations"):
 
 st.markdown("---")
 st.markdown("Built with Streamlit and Random Forest machine learning model 🤖")
+
+with st.expander("ℹ️ About", expanded=False):
+    st.markdown("Project Repository: https://github.com/ArjunSNair00/DataScience_Project")
+    st.markdown("Colab Notebook: https://colab.research.google.com/drive/1ojthMrW3dehkfuMwC3gARTS8Oy_E9sJH?usp=sharing")
+    team = """
+    <div style="background-color: #262a36; padding: 10px; border-radius: 5px;">
+        <h1>Team Members</h1>
+        <h5>Group - 5</h5>
+        <ul>
+        <li>Arjun S Nair - KNP24AD017</li>
+        <li>Akshay K Sasi - KNP24AD010</li>
+        <li>Muhammed Raihan - KNP24AD035</li>
+        <li>Abhishek S - KNP24AD002</li>
+        </ul>
+        <h3>Future Roadmap: </h3>
+        <p>Resume parser integration, improved UI, expanded dataset across regions and domains, enhanced NLP tokenization</p>
+    </div>
+    """
+    st.markdown(team, unsafe_allow_html=True)
