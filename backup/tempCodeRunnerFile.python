@@ -1,0 +1,227 @@
+import pandas as pd
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Load the dataset
+url = "https://raw.githubusercontent.com/ArjunSNair00/DataScience_Project/main/jobs_dataset.csv"
+jobs = pd.read_csv(url)
+
+# Skills dictionary and categories (from your notebook)
+skills_dict = {
+    0: "Programming Languages",
+    1: "Math & Statistics",
+    2: "Machine Learning & AI",
+    3: "ML Frameworks & Libraries",
+    4: "Big Data & Data Engineering",
+    5: "Databases",
+    6: "Cloud & DevOps",
+    7: "Data Analysis & BI",
+    8: "MLOps & Deployment",
+    9: "Systems & HPC",
+    10: "Other / Domain"
+}
+
+skill_categories = {
+    0: ["python", "r", "java", "c", "c#", "c++", "go", "scala", "haskell", "typescript",
+        "javascript", "react", "php", "perl", "bash", "shell scripting", "shell scripts", "unix", "linux",
+        "matlab", "swift", "kotlin"],
+    1: ["calculus", "linear algebra", "probability", "statistics", "hypothesis testing",
+        "classification", "clustering", "regression", "time series analysis", "time series forecasting",
+        "optimization", "graph theory", "stochastic simulation", "bayesian statistics", "multivariate statistics",
+        "statistical modeling", "statistical inference", "experimental design"],
+    2: ["machine learning", "deep learning", "nlp", "natural language processing", "computer vision",
+        "reinforcement learning", "recommendation systems", "anomaly detection", "generative ai",
+        "self-supervised learning", "multi-task learning", "multi-modal ai/ml", "large language models",
+        "llm", "rag", "prompt engineering", "ai/ml", "ai/ml development", "artificial intelligence",
+        "ai engineering", "data science", "data mining", "predictive modeling", "image processing",
+        "speech recognition", "NER", "foundation models", "prompt tuning", "embedding models", "vector databases"],
+    3: ["tensorflow", "pytorch", "keras", "mxnet", "scikit", "scipy", "numpy", "pandas",
+        "matplotlib", "seaborn", "plotly", "streamlit", "gradio", "fastai", "hugging face",
+        "transformers", "spacy", "nltk", "gensim", "statsmodels", "sympy", "xgboost",
+        "lightgbm", "catboost", "opencv", "dlib", "torch", "pycaret", "optuna"],
+    4: ["spark", "hadoop", "hive", "pig", "mapreduce", "kafka", "airflow", "databricks",
+        "big data", "etl", "data pipelines", "data wrangling", "data infrastructure", "data engineering"],
+    5: ["sql", "mysql", "postgresql", "sqlite", "oracle", "mongodb", "cassandra",
+        "redis", "dynamodb", "nosql", "bigtable", "hbase", "elasticsearch",
+        "data warehousing", "data lakes", "data modeling"],
+    6: ["aws", "azure", "gcp", "sagemaker", "azure ml", "vertex ai", "gcp vertex ai",
+        "docker", "kubernetes", "terraform", "ansible", "jenkins", "git", "gitlab", "github", "ci/cd", "Kubeflow", "Seldon Core"],
+    7: ["excel", "sheets", "tableau", "power bi", "looker", "superset", "data visualization",
+        "dash", "business intelligence", "data storytelling", "data reporting", "data dashboards"],
+    8: ["mlflow", "wandb", "dvc", "model deployment", "model monitoring",
+        "model evaluation", "model validation", "llmops", "aops", "model interpretability",
+        "explainable ai", "xai", "flask", "fastapi", "rest api", "grpc", "cloud functions", "serverless"],
+    9: ["hpc", "high performance computing", "high-performance computing",
+        "parallel processing", "cuda", "intel oneapi", "nvidia tensorrt",
+        "triton inference server", "onnxruntime", "distributed computing", "mpi",
+        "ray", "dask", "embedded systems", "internet of things", "iot"],
+    10: ["economics", "sociology", "finance", "fraud detection", "compliance",
+         "security", "cyber security", "hipaa", "data privacy", "data governance",
+         "project management", "team leadership", "critical thinking", "communication skills",
+         "physics", "audio signal processing", "signal processing", "computer graphics",
+         "computational biology", "bioinformatics", "chemistry", "geospatial analysis",
+         "geographic information systems (gis)", "operations research",
+         "supply chain management", "marketing analytics", "sales analytics",
+         "autocad", "solidworks", "3d modeling", "3d printing", "robotics",
+         "blockchain", "quantum computing", "game development", "unity", "unreal engine",
+         "mobile development", "edge computing", "federated learning", "data ethics"]
+}
+
+
+def extract_skills_with_categories(text, skill_categories):
+    """Extract skills from text and return skills with their categories"""
+    text = text.lower()
+    words = text.replace(",", " ").replace(".", " ").replace("(", " ").replace(")", " ").split()
+    found_skills = []
+    found_categories = []
+
+    for cat_id, skills in skill_categories.items():
+        for skill in skills:
+            s = skill.lower()
+            s_words = s.split()
+            if len(s_words) == 1:
+                if s in words:
+                    found_skills.append(skill)
+                    found_categories.append(cat_id)
+            else:
+                for i in range(len(words) - len(s_words) + 1):
+                    if words[i:i + len(s_words)] == s_words:
+                        found_skills.append(skill)
+                        found_categories.append(cat_id)
+                        break
+    return found_skills, found_categories
+
+
+def count_skills_by_category(skill_categories_list):
+    """Count skills by category (returns array of 11 counts)"""
+    counts = [0] * 11
+    for cat_id in skill_categories_list:
+        if 0 <= cat_id <= 10:
+            counts[cat_id] += 1
+    return counts
+
+
+def create_skill_vector(skills, all_unique_skills):
+    """Create a binary vector for skills"""
+    return [1 if skill in skills else 0 for skill in all_unique_skills]
+
+
+def calculate_match_score(user_skills, job_skills):
+    """Calculate match percentage"""
+    if not job_skills:
+        return 0
+    matched = len(set(user_skills) & set(job_skills))
+    return (matched / len(set(job_skills))) * 100
+
+
+def recommend_jobs(user_input, top_n=10):
+    """
+    Recommend top N jobs based on user skills input
+    
+    Parameters:
+    user_input (str): User's skills as text (e.g., "I know python, mysql, java, react")
+    top_n (int): Number of recommendations to return
+    
+    Returns:
+    DataFrame with top N recommended jobs
+    """
+    
+    # Extract user skills
+    user_skills, user_categories = extract_skills_with_categories(user_input, skill_categories)
+    
+    if not user_skills:
+        print("No valid skills found in your input. Please try again.")
+        return None
+    
+    print(f"\n✓ Detected Skills: {', '.join(user_skills)}")
+    print(f"✓ Total Skills Found: {len(user_skills)}\n")
+    
+    # Extract skills from all job descriptions
+    print("Processing job descriptions...")
+    jobs['skills'] = jobs['description'].apply(
+        lambda x: extract_skills_with_categories(str(x), skill_categories)[0]
+    )
+    jobs['skill_categories'] = jobs['description'].apply(
+        lambda x: extract_skills_with_categories(str(x), skill_categories)[1]
+    )
+    
+    # Get all unique skills
+    all_skills = set()
+    for skills_list in jobs['skills']:
+        all_skills.update(skills_list)
+    all_skills = sorted(list(all_skills))
+    
+    # Create skill vectors
+    user_vector = np.array([create_skill_vector(user_skills, all_skills)])
+    job_vectors = np.array([create_skill_vector(job_skills, all_skills) 
+                            for job_skills in jobs['skills']])
+    
+    # Calculate cosine similarity
+    similarities = cosine_similarity(user_vector, job_vectors)[0]
+    jobs['similarity_score'] = similarities
+    
+    # Calculate match percentages
+    jobs['match_percentage'] = jobs['skills'].apply(
+        lambda x: calculate_match_score(user_skills, x)
+    )
+    
+    # Filter jobs with at least some matching skills
+    matched_jobs = jobs[jobs['similarity_score'] > 0].copy()
+    
+    if matched_jobs.empty:
+        print("No matching jobs found. Try adding more skills!")
+        return None
+    
+    # Sort by similarity score
+    matched_jobs = matched_jobs.sort_values('similarity_score', ascending=False)
+    
+    # Get top N recommendations
+    top_jobs = matched_jobs.head(top_n)
+    
+    # Create output dataframe
+    recommendations = pd.DataFrame({
+        'Rank': range(1, len(top_jobs) + 1),
+        'Position': top_jobs['positionName'].values,
+        'Company': top_jobs['company'].values,
+        'Location': top_jobs['location'].values,
+        'Match Score': [f"{score:.1f}%" for score in top_jobs['match_percentage'].values],
+        'Similarity': [f"{score:.3f}" for score in top_jobs['similarity_score'].values],
+        'Matched Skills': [len(set(user_skills) & set(job_skills)) 
+                          for job_skills in top_jobs['skills'].values],
+        'Total Required': [len(job_skills) for job_skills in top_jobs['skills'].values],
+        'Skills Match': [', '.join(sorted(set(user_skills) & set(job_skills)))[:100] + '...' 
+                        if len(', '.join(sorted(set(user_skills) & set(job_skills)))) > 100 
+                        else ', '.join(sorted(set(user_skills) & set(job_skills)))
+                        for job_skills in top_jobs['skills'].values]
+    })
+    
+    return recommendations
+
+
+# Example usage
+if __name__ == "__main__":
+    # Test the recommender
+    user_input = "I'm good at python, mysql, java, react"
+    
+    print("=" * 80)
+    print("JOB RECOMMENDATION SYSTEM")
+    print("=" * 80)
+    print(f"\nUser Input: '{user_input}'")
+    
+    recommendations = recommend_jobs(user_input, top_n=10)
+    
+    if recommendations is not None:
+        print("\n" + "=" * 80)
+        print("TOP 10 RECOMMENDED JOBS")
+        print("=" * 80 + "\n")
+        
+        # Display recommendations
+        pd.set_option('display.max_columns', None)
+        pd.set_option('display.width', None)
+        pd.set_option('display.max_colwidth', 50)
+        
+        print(recommendations.to_string(index=False))
+        
+        print("\n" + "=" * 80)
+        print("\nTry different skills combinations!")
+        print("Example: recommend_jobs('I know tensorflow, pytorch, nlp, aws')")
