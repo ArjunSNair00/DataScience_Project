@@ -312,7 +312,7 @@ st.markdown("Built with Streamlit and Random Forest machine learning model 🤖"
 
 with st.expander("ℹ️ About", expanded=False):
     st.markdown("Project Repository: https://github.com/ArjunSNair00/DataScience_Project")
-    st.markdown("Colab Notebook: https://colab.research.google.com/drive/1ojthMrW3dehkfuMwC3gARTS8Oy_E9sJH?usp=sharing")
+    st.markdown("Python Notebook: [Google Colab Notebook](https://colab.research.google.com/github/ArjunSNair00/DataScience_Project/blob/main/job_recommendation_system_final.ipynb)")
     team = """
     <div style="background-color: #262a36; padding: 10px; border-radius: 5px;">
         <h1>Team Members</h1>
