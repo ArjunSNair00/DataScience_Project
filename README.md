@@ -1,1 +1,1 @@
-https://colab.research.google.com/drive/1ojthMrW3dehkfuMwC3gARTS8Oy_E9sJH?usp=sharing
+[Google Colab Notebook](https://colab.research.google.com/github/ArjunSNair00/DataScience_Project/blob/main/job_recommendation_system_final.ipynb)
